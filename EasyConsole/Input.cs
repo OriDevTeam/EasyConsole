@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Runtime.Serialization;
 
 namespace EasyConsole
 {
@@ -55,7 +57,20 @@ namespace EasyConsole
 
             TEnum choice = default(TEnum);
             foreach (var value in Enum.GetValues(type))
-                menu.Add(Enum.GetName(type, value), () => { choice = (TEnum)value; });
+            {
+                var enumType = typeof(TEnum);
+                var name = Enum.GetName(enumType, value);
+
+                var field = enumType.GetField(name).GetCustomAttributes(typeof(EnumMemberAttribute), true);
+
+                if (field.Length > 0)
+                {
+                    menu.Add(((EnumMemberAttribute[])field).Single().Value, () => { choice = (TEnum)value; });
+                }
+                else
+                    menu.Add(Enum.GetName(type, value), () => { choice = (TEnum)value; });
+            }
+
             menu.Display();
 
             return choice;

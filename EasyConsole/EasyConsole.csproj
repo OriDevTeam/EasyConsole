@@ -34,6 +34,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -66,7 +67,7 @@
   <Target Name="AfterBuild">
     <!-- Only download a new copy of nuget.exe if we don't have a copy available -->
     <WebDownload Condition="!Exists('nuget.exe')" Filename="nuget.exe" FileUri="https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" />
-    
-    <Exec Command="nuget pack EasyConsole.csproj"></Exec>
+    <Exec Command="nuget pack EasyConsole.csproj">
+    </Exec>
   </Target>
 </Project>
